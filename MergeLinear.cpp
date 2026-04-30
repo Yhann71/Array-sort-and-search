@@ -1,34 +1,18 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <iomanip>  // For perfectly aligned tables and decimals
-#include <chrono>   // For Time Complexity (Performance Metrics)
-
-using namespace std;
-
 // ============================================================
-// DATA STRUCTURE
+// Assignment.cpp - Source File
+// Implementation of Algorithms and Main Menu
 // ============================================================
-struct Resident {
-    string id;
-    int    age;
-    string transportMode;
-    double dailyDistance;
-    double carbonEmission;
-    int    daysPerMonth;
-};
 
-// ============================================================
-// ARRAYS 
-// ============================================================
-const int MAX = 500;
+#include "Assignment.hpp" // Pulls in all libraries, structs, and declarations!
 
+// 1. Define Global Variables (No 'extern' here)
 Resident cityA[MAX];
 Resident cityB[MAX];
 Resident cityC[MAX];
 
-int sizeA = 0, sizeB = 0, sizeC = 0;
+int sizeA = 0;
+int sizeB = 0;
+int sizeC = 0;
 
 // ============================================================
 // LOAD DATA FROM CSV FILE
@@ -127,7 +111,7 @@ void mergeSort(Resident arr[], int left, int right, int sortBy) {
 }
 
 // ============================================================
-// COPY ARRAY -WOULD NOT MIX THE DATABASE
+// COPY ARRAY 
 // ============================================================
 void copyArray(Resident src[], Resident dst[], int size) {
     for (int i = 0; i < size; i++) {
@@ -347,7 +331,7 @@ void emissionAnalysis(Resident arr[], int size, string cityName) {
         cout << "----------------------------------------------------------------------------" << endl;
         cout << "Total Emission for Age Group: " << fixed << setprecision(2) << groupTotalEmit << " kg CO2\n" << endl;
         
-        cout.unsetf(ios_base::fixed); // Reset formatting so other menus don't have mandatory decimals
+        cout.unsetf(ios_base::fixed); 
     }
 }
 
@@ -375,7 +359,6 @@ int main() {
     int choice = 0;
 
     do {
-        // --- NEW CONSOLIDATED MAIN MENU ---
         cout << "\n=====================================" << endl;
         cout << "   TRANSPORT DATABASE - ARRAY        " << endl;
         cout << "=====================================" << endl;
@@ -387,9 +370,6 @@ int main() {
         cout << "Enter choice: ";
         cin >> choice;
 
-        // ----------------------------------------------------
-        // SEARCH MENU
-        // ----------------------------------------------------
         if (choice == 1) {
             int searchChoice;
             cout << "\n=====================================" << endl;
@@ -403,7 +383,6 @@ int main() {
             cin >> searchChoice;
 
             if (searchChoice >= 1 && searchChoice <= 3) {
-                // Determine what to search for BEFORE asking for the city
                 int age = 0;
                 string mode = "";
                 double minD = 0, maxD = 0;
@@ -427,7 +406,7 @@ int main() {
                     else if (range == 3) { minD = 21; maxD = 9999; }
                     else {
                         cout << "Invalid range selection!" << endl;
-                        validSearch = false; // Prevents the city menu from showing up if they make a mistake
+                        validSearch = false; 
                     }
                 }
 
@@ -455,10 +434,6 @@ int main() {
                 cout << "Invalid search choice! Returning to main menu." << endl;
             }
         }
-        
-        // ----------------------------------------------------
-        // THE SORT MENU
-        // ----------------------------------------------------
         else if (choice == 2) {
             int sortChoice;
             cout << "\n=====================================" << endl;
@@ -481,10 +456,6 @@ int main() {
                 cout << "Invalid sorting choice! Returning to main menu." << endl;
             }
         }
-        
-        // ----------------------------------------------------
-        // CARBON ANALYSIS
-        // ----------------------------------------------------
         else if (choice == 3) {
             int city = selectCity();
 
@@ -492,10 +463,6 @@ int main() {
             else if (city == 2) emissionAnalysis(cityB, sizeB, "City B");
             else if (city == 3) emissionAnalysis(cityC, sizeC, "City C");
         }
-        
-        // ----------------------------------------------------
-        // EXIT
-        // ----------------------------------------------------
         else if (choice == 4) {
             cout << "Exiting system. Goodbye!" << endl;
         }
