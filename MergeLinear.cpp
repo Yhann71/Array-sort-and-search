@@ -1,8 +1,3 @@
-// ============================================================
-// Assignment.cpp - Source File
-// Implementation of Algorithms and Main Menu
-// ============================================================
-
 #include "Assignment.hpp" // Pulls in all libraries, structs, and declarations!
 
 // 1. Define Global Variables (No 'extern' here)
