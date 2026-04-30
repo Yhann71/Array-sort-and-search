@@ -1,3 +1,4 @@
+#include "system.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -5,16 +6,6 @@
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
-
-// ---------------- STRUCT ----------------
-struct Resident {
-    string id;
-    int age;
-    string mode;
-    double distance;
-    double factor;
-    int days;
-};
 
 // ---------------- ARRAY ----------------
 Resident arr[1000];
@@ -51,9 +42,9 @@ void loadCSV(string filename) {
 
 // ---------------- DISPLAY ----------------
 void displayHeader() {
-    cout << "-----------------------------------------------------------------------\n";
-    cout << "| ID | Age | Mode | Distance | Days | CO2 |\n";
-    cout << "-----------------------------------------------------------------------\n";
+    cout << "----------------------------------------------------\n";
+    cout << "| ID  | Age | Mode      | Distance| Days| CO2      |\n";
+    cout << "----------------------------------------------------\n";
 }
 
 void printRow(Resident r) {
@@ -102,53 +93,117 @@ void loadSelectedDataset(int opt) {
     }
 }
 
-// ---------------- SEARCH ----------------
-void searchMenu() {
-    int opt;
-    string id, mode;
-    int age;
-
-    cout << "\nSearch By\n";
-    cout << "1. Resident ID\n";
-    cout << "2. Age\n";
-    cout << "3. Mode of Transport\n";
-    cout << "Select: ";
-    cin >> opt;
-
+// Binary Search Age
+void binarySearchAge(int target) {
+    int left = 0, right = sizeArr - 1;
     bool found = false;
 
-    if (opt == 1) {
-        cout << "Enter Resident ID: ";
-        cin >> id;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (arr[mid].age == target) {
+
+            displayHeader();
+
+            int i = mid;
+            while (i >= 0 && arr[i].age == target) {
+                printRow(arr[i]);
+                i--;
+            }
+
+            i = mid + 1;
+            while (i < sizeArr && arr[i].age == target) {
+                printRow(arr[i]);
+                i++;
+            }
+
+            found = true;
+            break;
+        }
+
+        else if (arr[mid].age < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
     }
-    else if (opt == 2) {
-        cout << "Enter Age: ";
-        cin >> age;
+
+    if (!found) cout << "No record found.\n";
+}
+
+// Binary Search Mode
+void binarySearchMode(string target) {
+    int left = 0, right = sizeArr - 1;
+    bool found = false;
+
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (arr[mid].mode == target) {
+
+            displayHeader();
+
+            int i = mid;
+            while (i >= 0 && arr[i].mode == target) {
+                printRow(arr[i]);
+                i--;
+            }
+
+            i = mid + 1;
+            while (i < sizeArr && arr[i].mode == target) {
+                printRow(arr[i]);
+                i++;
+            }
+
+            found = true;
+            break;
+        }
+
+        else if (arr[mid].mode < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
     }
-    else if (opt == 3) {
-        cout << "Enter Mode (Car/Bus/Bicycle/Walking/Carpool/School Bus) : ";
-        cin.ignore();
-        getline(cin, mode);
+
+    if (!found) cout << "No record found.\n";
+}
+
+void binarySearchDistance(double threshold) {
+    int left = 0, right = sizeArr - 1;
+    int result = -1;
+
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (arr[mid].distance > threshold) {
+            result = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
     }
-    else {
-        cout << "Invalid option.\n";
+
+    if (result == -1) {
+        cout << "No record found.\n";
         return;
     }
 
     displayHeader();
 
-    for (int i = 0; i < sizeArr; i++) {
-        if ((opt == 1 && arr[i].id == id) ||
-            (opt == 2 && arr[i].age == age) ||
-            (opt == 3 && arr[i].mode == mode)) {
-
-            printRow(arr[i]);
-            found = true;
-        }
+    for (int i = result; i < sizeArr; i++) {
+        printRow(arr[i]);
     }
+}
 
-    if (!found) {
-        cout << "No record found.\n";
+void sortByDistance() {
+    for (int i = 1; i < sizeArr; i++) {
+        Resident key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j].distance > key.distance) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
     }
 }
 
@@ -181,6 +236,61 @@ void insertionSort() {
             j--;
         }
         arr[j + 1] = key;
+    }
+}
+
+// ---------------- SEARCH ----------------
+void searchMenu() {
+    int opt;
+    string mode;
+    int age;
+    double distance;
+
+    cout << "\nSearch By\n";
+    cout << "1. Age\n";
+    cout << "2. Mode of Transport\n";
+    cout << "3. Daily Distance Threshold\n";
+    cout << "Select: ";
+    cin >> opt;
+
+    bool found = false;
+
+    // ---------------- INPUT ----------------
+
+    if (opt == 1) {
+        cout << "Enter Age: ";
+        cin >> age;
+        insertionSort();
+        binarySearchAge(age);
+    }
+    else if (opt == 2) {
+        cout << "Enter Mode (Car/Bus/Bicycle/Walking/Carpool/School Bus) : ";
+        cin.ignore();
+        getline(cin, mode);
+
+        for (int i = 1; i < sizeArr; i++) {
+            Resident key = arr[i];
+            int j = i - 1;
+
+            while (j >= 0 && arr[j].mode > key.mode) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+        insertionSort();
+        binarySearchMode(mode);
+    }
+    else if (opt == 3) {
+        cout << "Enter Distance Threshold (> km): ";
+        cin >> distance;
+
+        sortByDistance();
+        binarySearchDistance(distance);        
+    }
+    else {
+        cout << "Invalid option.\n";
+        return;
     }
 }
 
@@ -220,7 +330,7 @@ int getAgeGroup(int& minAge, int& maxAge) {
 // ---------------- ANALYSIS ----------------
 void analysis() {
 
-    // ⭐ Sorting Menu
+    // Sorting Menu
     cout << "\n===================\n";
     cout << "Sorting Algorithms\n";
     cout << "===================\n";
@@ -235,7 +345,7 @@ void analysis() {
         return;
     }
 
-    // ⭐ Measure time
+    // Measure time
     auto start = high_resolution_clock::now();
 
     insertionSort();
@@ -243,7 +353,7 @@ void analysis() {
     auto end = high_resolution_clock::now();
     double timeTaken = duration<double, milli>(end - start).count();
 
-    // ⭐ Age Group
+    // Age Group
     int minAge, maxAge;
     int group = getAgeGroup(minAge, maxAge);
     if (group == -1) return;
