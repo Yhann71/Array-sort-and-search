@@ -49,7 +49,7 @@ void arrayMenu()
     int temp;
     int *opt = &temp;
     cout << "=============================================== \n";
-    cout << "Choose data set \n";
+    cout << "Choose sort and search algorithm \n";
     cout << "=============================================== \n";
     cout << "1. Binary Insertion \n";
     cout << "2. Linear Merge \n";
