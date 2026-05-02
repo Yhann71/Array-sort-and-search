@@ -194,6 +194,44 @@ void binarySearchDistance(double threshold) {
     }
 }
 
+//-----------------Display Sort list-----
+void displaySortedList(double timeTaken) {
+    displayHeader();
+
+    for (int i = 0; i < sizeArr; i++) {
+        printRow(arr[i]);
+    }
+
+    cout << "\n--- Memory Usage ---\n";
+    cout << "Elements (n): " << sizeArr << endl;
+    cout << "Memory Usage: " << sizeArr << " x " << sizeof(Residents)
+         << " bytes = " << sizeArr * sizeof(Residents) << " bytes\n";
+
+    cout << "\n--- Time Complexity (Insertion Sort) ---\n";
+    cout << "Time Complexity: O(n^2)\n";
+    cout << "Time Taken: " << timeTaken << " ms\n";
+}
+
+void sortByCarbon() {
+    for (int i = 1; i < sizeArr; i++) {
+        Residents key = arr[i];
+        int j = i - 1;
+
+        double keyEmission = key.distance * key.factor * key.days;
+
+        while (j >= 0) {
+            double currEmission = arr[j].distance * arr[j].factor * arr[j].days;
+
+            if (currEmission <= keyEmission) break;
+
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
 void sortByDistance() {
     for (int i = 1; i < sizeArr; i++) {
         Residents key = arr[i];
@@ -291,14 +329,6 @@ void searchMenu() {
     else {
         cout << "Invalid option.\n";
         return;
-    }
-}
-
-//-----------------Display Sort list-----
-void displaySortedList() {
-    displayHeader();
-    for (int i = 0; i < sizeArr; i++) {
-        printRow(arr[i]);
     }
 }
 
@@ -430,15 +460,48 @@ void analysis() {
 
     // ---------------- EXTRA MENU ----------------
     int choice;
-    cout << "\n====================\n";
-    cout << "1. Display Sorted List\n";
-    cout << "2. Exit\n";
-    cout << "Select: ";
-    cin >> choice;
 
-    if (choice == 1) {
-        displaySortedList();
-    }
+    do {
+        cout << "\n====================\n";
+        cout << "1. Display Sorted by Age\n";
+        cout << "2. Display Sorted by Carbon Emission\n";
+        cout << "3. Display Sorted by Distance\n";
+        cout << "4. Exit\n";
+        cout << "Select: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            auto start = high_resolution_clock::now();
+
+            insertionSort();
+
+            auto end = high_resolution_clock::now();
+            double timeTaken = duration<double, milli>(end - start).count();
+
+            displaySortedList(timeTaken);
+        }
+        else if (choice == 2) {
+            auto start = high_resolution_clock::now();
+
+            sortByCarbon();
+
+            auto end = high_resolution_clock::now();
+            double timeTaken = duration<double, milli>(end - start).count();
+
+            displaySortedList(timeTaken);
+        }
+        else if (choice == 3) {
+            auto start = high_resolution_clock::now();
+
+            sortByDistance();
+
+            auto end = high_resolution_clock::now();
+            double timeTaken = duration<double, milli>(end - start).count();
+
+            displaySortedList(timeTaken);
+        }
+
+    } while (choice != 4);
 }
 
 
