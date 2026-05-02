@@ -204,7 +204,7 @@ void displaySortedList() {
 
 void sortByMode() {
     for (int i = 1; i < sizeArr; i++) {
-        Resident key = arr[i];
+        Residents key = arr[i];
         int j = i - 1;
 
         while (j >= 0 && arr[j].mode > key.mode) {
