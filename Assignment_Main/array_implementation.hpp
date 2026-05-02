@@ -452,7 +452,7 @@ void analysis() {
     int choice;
     cout << "\n====================\n";
     cout << "1. Display Sorted by Age\n";
-    cout << "Display Sorted by Carbon Emission\n";
+    cout << "2. Display Sorted by Carbon Emission\n";
     cout << "3. Display Sorted by Distance\n";
 
     cout << "Select: ";
