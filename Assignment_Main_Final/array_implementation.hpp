@@ -530,10 +530,6 @@ void analysis() {
 
 // ---------------- MAIN ----------------
 int binaryInsertion() {
-    cout << "\n==========================================\n";
-    cout << "Welcome to the Carbon Emission System\n";
-    cout << "==========================================\n";
-
     int datasetChoice;
 
     while (true) { 
