@@ -35,11 +35,11 @@ void binarySearchDistance(double threshold);
 
 // Sorting
 void insertionSort();
+void displaySortedList();
 void sortByDistance();
 
 // Analysis
 void analysis();
-void displaySortedList();
 int getAgeGroup(int& minAge, int& maxAge);
 
 #endif
