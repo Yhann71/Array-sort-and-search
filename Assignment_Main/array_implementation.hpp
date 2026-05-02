@@ -202,6 +202,19 @@ void displaySortedList() {
     }
 }
 
+void sortByMode() {
+    for (int i = 1; i < sizeArr; i++) {
+        Resident key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j].mode > key.mode) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
 void sortByDistance() {
     for (int i = 1; i < sizeArr; i++) {
         Residents key = arr[i];
