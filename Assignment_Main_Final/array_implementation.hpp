@@ -21,7 +21,7 @@ void loadCSV(string filename) {
         return;
     }
 
-    getline(file, line); // skip header
+    getline(file, line);
 
     while (getline(file, line)) {
         stringstream ss(line);
@@ -94,9 +94,10 @@ void loadSelectedDataset(int opt) {
 }
 
 // Binary Search Age
-void binarySearchAge(int target) {
+void binarySearchAge(int target, double timeTaken) {
     int left = 0, right = sizeArr - 1;
     bool found = false;
+    int count = 0;
 
     while (left <= right) {
         int mid = (left + right) / 2;
@@ -108,32 +109,46 @@ void binarySearchAge(int target) {
             int i = mid;
             while (i >= 0 && arr[i].age == target) {
                 printRow(arr[i]);
+                count++;
                 i--;
             }
 
             i = mid + 1;
             while (i < sizeArr && arr[i].age == target) {
                 printRow(arr[i]);
+                count++;
                 i++;
             }
 
             found = true;
             break;
         }
-
         else if (arr[mid].age < target)
             left = mid + 1;
         else
             right = mid - 1;
     }
 
-    if (!found) cout << "No record found.\n";
+    if (!found) {
+        cout << "No record found.\n";
+        return;
+    }
+
+    cout << "\n--- Memory Usage ---\n";
+    cout << "Elements (n): " << count << endl;
+    cout << "Memory Usage: " << count << " x " << sizeof(Residents)
+         << " bytes = " << count * sizeof(Residents) << " bytes\n";
+
+    cout << "\n--- Time Complexity (Binary Search) ---\n";
+    cout << "Time Complexity: O(log n)\n";
+    cout << "Time Taken: " << timeTaken << " ms\n";
 }
 
 // Binary Search Mode
-void binarySearchMode(string target) {
+void binarySearchMode(string target, double timeTaken) {
     int left = 0, right = sizeArr - 1;
     bool found = false;
+    int count = 0;
 
     while (left <= right) {
         int mid = (left + right) / 2;
@@ -145,29 +160,42 @@ void binarySearchMode(string target) {
             int i = mid;
             while (i >= 0 && arr[i].mode == target) {
                 printRow(arr[i]);
+                count++;
                 i--;
             }
 
             i = mid + 1;
             while (i < sizeArr && arr[i].mode == target) {
                 printRow(arr[i]);
+                count++;
                 i++;
             }
 
             found = true;
             break;
         }
-
         else if (arr[mid].mode < target)
             left = mid + 1;
         else
             right = mid - 1;
     }
 
-    if (!found) cout << "No record found.\n";
+    if (!found) {
+        cout << "No record found.\n";
+        return;
+    }
+
+    cout << "\n--- Memory Usage ---\n";
+    cout << "Elements (n): " << count << endl;
+    cout << "Memory Usage: " << count << " x " << sizeof(Residents)
+         << " bytes = " << count * sizeof(Residents) << " bytes\n";
+
+    cout << "\n--- Time Complexity (Binary Search) ---\n";
+    cout << "Time Complexity: O(log n)\n";
+    cout << "Time Taken: " << timeTaken << " ms\n";
 }
 
-void binarySearchDistance(double threshold) {
+void binarySearchDistance(double threshold, double timeTaken) {
     int left = 0, right = sizeArr - 1;
     int result = -1;
 
@@ -189,9 +217,21 @@ void binarySearchDistance(double threshold) {
 
     displayHeader();
 
+    int count = 0;
+
     for (int i = result; i < sizeArr; i++) {
         printRow(arr[i]);
+        count++;
     }
+
+    cout << "\n--- Memory Usage ---\n";
+    cout << "Elements (n): " << count << endl;
+    cout << "Memory Usage: " << count << " x " << sizeof(Residents)
+         << " bytes = " << count * sizeof(Residents) << " bytes\n";
+
+    cout << "\n--- Time Complexity (Binary Search) ---\n";
+    cout << "Time Complexity: O(log n)\n";
+    cout << "Time Taken: " << timeTaken << " ms\n";
 }
 
 //-----------------Display Sort list-----
@@ -284,23 +324,29 @@ void searchMenu() {
     int age;
     double distance;
 
-    cout << "\nSearch By\n";
+    cout << "\nSearch By (Binary Search)\n";
     cout << "1. Age\n";
     cout << "2. Mode of Transport\n";
     cout << "3. Daily Distance Threshold\n";
     cout << "Select: ";
     cin >> opt;
 
-    bool found = false;
-
-    // ---------------- INPUT ----------------
+    // ---------------- SEARCH ----------------
 
     if (opt == 1) {
         cout << "Enter Age: ";
         cin >> age;
+
         insertionSort();
-        binarySearchAge(age);
+
+        auto start = high_resolution_clock::now();
+
+        auto end = high_resolution_clock::now();
+        double timeTaken = duration<double, milli>(end - start).count();
+
+        binarySearchAge(age, timeTaken);
     }
+
     else if (opt == 2) {
         cout << "Enter Mode (Car/Bus/Bicycle/Walking/Carpool/School Bus) : ";
         cin.ignore();
@@ -316,19 +362,31 @@ void searchMenu() {
             }
             arr[j + 1] = key;
         }
-        insertionSort();
-        binarySearchMode(mode);
+
+        auto start = high_resolution_clock::now();
+
+        auto end = high_resolution_clock::now();
+        double timeTaken = duration<double, milli>(end - start).count();
+
+        binarySearchMode(mode, timeTaken);
     }
+
     else if (opt == 3) {
         cout << "Enter Distance Threshold (> km): ";
         cin >> distance;
 
         sortByDistance();
-        binarySearchDistance(distance);        
+
+        auto start = high_resolution_clock::now();
+
+        auto end = high_resolution_clock::now();
+        double timeTaken = duration<double, milli>(end - start).count();
+
+        binarySearchDistance(distance, timeTaken); 
     }
+
     else {
         cout << "Invalid option.\n";
-        return;
     }
 }
 
