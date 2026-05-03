@@ -30,6 +30,7 @@ void loadSelectedDataset(int opt);
 // Search
 void searchMenu();
 void binarySearchAge(int target);
+void binarySearchAgeGroup(int minAge);
 void binarySearchMode(string target);
 void binarySearchDistance(double threshold);
 
