@@ -170,9 +170,11 @@ void binarySearchAgeGroup(int minAge, int maxAge, double timeTaken) {
 
     int count = 0;
 
-    for (int i = startIndex; i < sizeArr && arr[i].age <= maxAge; i++) {
-        printRow(arr[i]);
-        count++;
+    for (int i = startIndex; i < sizeArr; i++) {
+        if (arr[i].age >= minAge && arr[i].age <= maxAge) {
+            printRow(arr[i]);
+            count++;
+        }
     }
 
     cout << "\n--- Memory Usage ---\n";
@@ -261,8 +263,10 @@ void binarySearchDistance(double threshold, double timeTaken) {
     int count = 0;
 
     for (int i = result; i < sizeArr; i++) {
-        printRow(arr[i]);
-        count++;
+        if (arr[i].distance > threshold) {
+            printRow(arr[i]);
+            count++;
+        }
     }
 
     cout << "\n--- Memory Usage ---\n";
@@ -355,8 +359,11 @@ void searchMenu() {
     cin >> opt;
 
     // ---------------- SEARCH ----------------
+
     if (opt == 1) {
+
         int subOpt;
+
         cout << "\n1. Exact Age\n";
         cout << "2. Age Group\n";
         cout << "Select: ";
@@ -422,6 +429,7 @@ void searchMenu() {
     else if (opt == 3) {
         cout << "Enter Distance Threshold (> km): ";
         cin >> distance;
+
 
         auto start = high_resolution_clock::now();
 
