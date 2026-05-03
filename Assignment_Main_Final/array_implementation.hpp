@@ -355,17 +355,14 @@ void searchMenu() {
     cin >> opt;
 
     // ---------------- SEARCH ----------------
-
     if (opt == 1) {
-
         int subOpt;
-
         cout << "\n1. Exact Age\n";
         cout << "2. Age Group\n";
         cout << "Select: ";
         cin >> subOpt;
 
-        insertionSort();   // must sort first
+        insertionSort();
 
         if (subOpt == 1) {
             int age;
