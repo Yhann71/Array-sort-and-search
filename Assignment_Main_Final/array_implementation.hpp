@@ -362,8 +362,6 @@ void searchMenu() {
         cout << "Select: ";
         cin >> subOpt;
 
-        insertionSort();
-
         if (subOpt == 1) {
             int age;
             cout << "Enter Age: ";
@@ -424,8 +422,6 @@ void searchMenu() {
     else if (opt == 3) {
         cout << "Enter Distance Threshold (> km): ";
         cin >> distance;
-
-        sortByDistance();
 
         auto start = high_resolution_clock::now();
 
