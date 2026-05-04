@@ -1,49 +1,61 @@
-#ifndef MERGE_LINEAR_HEADER_HPP
-#define MERGE_LINEAR_HEADER_HPP
+#ifndef MERGE_LINEAR_HPP
+#define MERGE_LINEAR_HPP
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <iomanip>  
-#include <chrono>   
+#include <chrono>
+#include <iomanip>
+#include <cctype>
 
 using namespace std;
 
-// 1. Data Structure
+// Define MAX size for arrays
+const int MAX = 1000;
+
+// Resident data structure
 struct Resident {
     string id;
-    int    age;
+    int age;
     string transportMode;
     double dailyDistance;
     double carbonEmission;
-    int    daysPerMonth;
+    int daysPerMonth;
 };
 
-// 2. Global Variables (Using 'extern' so the compiler knows they exist)
-const int MAX = 500;
-
+// --- GLOBAL VARIABLE DECLARATIONS (with 'extern') ---
 extern Resident cityA[MAX];
 extern Resident cityB[MAX];
 extern Resident cityC[MAX];
-
 extern int sizeA;
 extern int sizeB;
 extern int sizeC;
 
-// 3. Function Declarations (Notice the semicolons!)
+// --- FUNCTION DECLARATIONS ---
+
+// 1. Data Loading
 void loadData(string filename, Resident arr[], int& size);
 
-void merge(Resident arr[], int left, int mid, int right, int sortBy);
-void mergeSort(Resident arr[], int left, int right, int sortBy);
-void copyArray(Resident src[], Resident dst[], int size);
-
-void searchByAge(Resident arr[], int size, string cityName, int targetAge);
+// 2. Linear Search Algorithms
+void searchByAge(Resident arr[], int size, string cityName, int minAge, int maxAge);
 void searchByTransport(Resident arr[], int size, string cityName, string targetMode);
 void searchByDistance(Resident arr[], int size, string cityName, double minD, double maxD);
+void searchByCarbonEmission(Resident arr[], int size, string cityName, double targetCarbon);
 
+// 3. Sorting Algorithms
+void merge(Resident arr[], int left, int mid, int right, int sortBy);
+void mergeSort(Resident arr[], int left, int right, int sortBy);
+
+// 4. Analysis and Display
 void displaySorted(Resident arr[], int size, string cityName, int sortChoice);
-void emissionAnalysis(Resident arr[], int size, string cityName);
+void emissionAnalysis(Resident arr[], int size, string cityName, int ageChoice);
+
+// 5. Utility
+void copyArray(Resident src[], Resident dst[], int size);
 int selectCity();
 
-#endif
+// --- THE FIX: Declare linearMerge so mainMenu can see it ---
+int linearMerge();
+
+#endif // MERGE_LINEAR_HPP
