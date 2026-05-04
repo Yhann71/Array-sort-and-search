@@ -1,5 +1,5 @@
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#ifndef ARRAY_IMPLEMENTATION_HPP
+#define ARRAY_IMPLEMENTATION_HPP
 
 #include <iostream>
 #include <string>
